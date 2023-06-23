@@ -10,10 +10,10 @@
         </a>
     </div>
     <div class="container2">
-        <a href="?pag=landing"class="nav-link <?php if($_GET['pag'] == 'landing') echo 'currentPage'; ?>">Home</a>
-        <a href="?pag=tutorials"class="nav-link <?php if($_GET['pag'] == 'tutorials') echo 'currentPage'; ?>">Tutoriales</a>
-        <a href="?pag=docs"class="nav-link <?php if($_GET['pag'] == 'docs') echo 'currentPage'; ?>">Documentación</a>
-        <a href="?pag=contacts"class="nav-link <?php if($_GET['pag'] == 'nav-link') echo 'currentPage'; ?>">Contactos</a>    
+        <a href="?pag=landing"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'landing') echo 'currentPage'; ?>">Home</a>
+        <a href="?pag=tutorials"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'tutorials') echo 'currentPage'; ?>">Tutoriales</a>
+        <a href="?pag=docs"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'docs') echo 'currentPage'; ?>">Documentación</a>
+        <a href="?pag=contacts"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'nav-link') echo 'currentPage'; ?>">Contactos</a>    
     </div>
     <div class="container3">
         <a href="?pag=closeSession">

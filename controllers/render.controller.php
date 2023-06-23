@@ -2,31 +2,32 @@
     class RenderContent{
 
         public static function views(){
-            $page=isset($_GET['pag'])?$_GET['pag']:'home';
-            switch($page){
-                case 'landing':
-                    LandingController::landing();
-                    break;
-                case 'tutorials':
-                    LandingController::tutorials();
-                    break;
-                case 'docs':
-                    LandingController::docs();
-                    break;
-                case 'contacts':
-                    LandingController::contacts();
-                    break;
-                case 'admin':
-                    LandingController::admin();
-                    break;
-
-                default:
-                    LandingController::landing();
-                    break;
+            if(isset($_GET['pag'])){
+                $page=$_GET['pag'];
+                switch($page){
+                    case 'landing':
+                        LandingController::landing();
+                        break;
+                    case 'tutorials':
+                        LandingController::tutorials();
+                        break;
+                    case 'docs':
+                        LandingController::docs();
+                        break;
+                    case 'contacts':
+                        LandingController::contacts();
+                        break;
+                    case 'admin':
+                        LandingController::admin();
+                        break;
+                }
+            }else if(isset ($_POST['cat'])){
+                $cat=$_POST['cat'];
+                LandingController::loadCatVideos($cat);
+            }else{
+                LandingController::landing();
             }
         }
-        public static function redirectToAdmin(){
-            LandingController::admin();
-        }
+        
     }
 ?>
