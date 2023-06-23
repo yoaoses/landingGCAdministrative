@@ -15,16 +15,12 @@
         <a href="?pag=docs"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'docs') echo 'currentPage'; ?>">Documentación</a>
         <a href="?pag=contacts"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'nav-link') echo 'currentPage'; ?>">Contactos</a>    
     </div>
-    <div class="container3">
-        <a href="?pag=closeSession">
-            <button class="btn btn-sm btn-outline-light">
-                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-            </button>
+    <div class="container3 ">
+        <a href="?pag=closeSession" class="btn btn-sm btn-outline-light disabled" aria-disabled="true">   
+                <i class="bi bi-box-arrow-right pr-2"></i> Cerrar sesión
         </a>
-        <a href="?pag=admin">
-            <button class="btn btn-sm btn-outline-light" >
+        <a href="?pag=admin"class="btn btn-sm btn-outline-light">
                 <i class="bi bi-wrench-adjustable-circle"></i>
-            </button>
         </a>
         
 
