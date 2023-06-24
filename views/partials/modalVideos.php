@@ -1,37 +1,29 @@
 <div class="card p-1">
-    <form action="?" method="POST">
+    <form id="modalCatForm">
         <div class="input-group input-group-sm mb-2">
             <select class="form-select" id="catSelect" onchange="getSetName(this, 'catNameInput')" aria-label="Default select example">        
                 <?php
-                    require_once '../models/DBQ.php';
-                    $dbq=new DBQ();
-                    $data = $dbq->selectStuff(["*"], "video_categories");
-                    if(count($data) == 0) {
-                        echo '<option selected>No hay Categorías Agregar Nueva--></option>';
-                    } else {
-                        $options = '<option selected>Listado Categorías</option>';
-                        foreach($data as $index => $item) {
-                            $options .= "<option value=\"" . $item['id'] . "\">" . $item['modulo'] . "</option>";
-                        }
-                        echo $options;
-                    }
+                    /*echo LandingController::loadCategories("select");*/
+                    include '../controllers/videosModal.controller.php';
+                    echo videoModalController::getCats();
                 ?>
             </select>
             <!--<div class="input-group-append">-->
                 <input type="text" class="form-control select disabled" onclick="selectAll()" value="Nombre nueva categoría y click en Agregar-->" name="catName" id="catNameInput">
                 <button class="btn btn-sm btn-outline-primary dropdown-toggle" onClick="checkOptions()" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                 <ul class="dropdown-menu dropdown-menu-lg-end">
-                    <li><a id="addButton" class="dropdown-item" href="?action=add">Agregar</a></li>
-                    <li><a class="dropdown-item" href="?action=update">Actualizar Nombre</a></li>
-                    <li><a class="dropdown-item" href="?action=editList">Editar Videos</a></li>
+                    <li><a id="addButton" class="dropdown-item" onClick="submit('add')">Agregar</a></li>
+                    <li><a class="dropdown-item" >Actualizar Nombre</a></li>
+                    <li><a class="dropdown-item" >Editar Videos</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="?action=delete">Eliminar Categoría</a></li>
+                    <li><a class="dropdown-item" >Eliminar Categoría</a></li>
                 </ul>
             <!--</div>-->
         </div>
     </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     formState={
         text:null,
@@ -45,6 +37,7 @@
             formState.target.value="Nombre nueva categoría y click en Agregar-->";
         }
     }
+
     const selectAll=()=>{
         formState.target.select();
     }
@@ -55,5 +48,67 @@
             document.getElementById("addButton").classList.remove("d-none");
         }
     }
+    const submit=(option)=>{
+        switch(option){
+            case"add":
+                //document.getElementById("modalCatForm").submit();
+                sendNew();
+                break;
+        }
+    }
+    //----controlador select----
+    
+    //    $(document).ready(function() {
+    //    $('#modalCatForm').submit(function(event) {
+    //        event.preventDefault();
+    const sendNew=()=>{
+            // Obtener el nombre de la nueva categoría ingresado
+            var catName = $('#catNameInput').val().trim();
+
+            // Verificar si el campo no está vacío
+            if (catName !== '') {
+                // Realizar una solicitud AJAX para agregar la nueva categoría
+                $.ajax({
+                    url: '../controllers/videosModal.controller.php',
+                    method: 'POST',
+                    data: {
+                        action: 'addNewCat',
+                        catName: catName,
+                        table: 'video_categories'
+                    },
+                    success: function(response) {
+                        console.log("response ===>",response);
+                        if (response.status === 'success') {
+                            // La categoría se agregó correctamente, realizar una nueva solicitud para obtener la lista actualizada
+                            $.ajax({
+                                url: '../controllers/videosModal.controller.php',
+                                method: 'POST',
+                                data: {
+                                    action: 'getCats'
+                                },
+                                success: function(updatedOptions) {
+                                    // Actualizar el select con las nuevas opciones
+                                    $('#catSelect').html(updatedOptions);
+                                }
+                            });
+                        } else {
+                            // Error al agregar la categoría
+                            console.log('Error al agregar la categoría');
+                        }
+                    },
+                    error:function(response){
+                        console.log("error,response ===>",response);
+                    },
+                    complete:function(response){
+                        console.log(" complete response ===>",response);
+                    }
+                });
+            }
+    }
+    
+    //------------------------- 
+
+    
+
 </script>
 

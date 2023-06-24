@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/conn.php';
+    require_once '../config/conn.php';
 
 
     if($_SERVER['REQUEST_METHOD']==='POST'){
@@ -18,6 +18,7 @@
 
         if($row['count']==1){
             $_SESSION['admin_logged']=true;
+            
             //var_dump($_SESSION['admin_logged']);
             header("Location: ../public/index.php?pag=admin");
         }else{

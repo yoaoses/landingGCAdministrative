@@ -57,6 +57,31 @@
                 return array(); // Si no hay resultados, retornamos un array vacío
             }
         }
+        public static function insertRecords($incommingValues, $table) {
+            /**
+             * Ejecuta una consulta insert en la base de datos y devuelve el estado.
+             *
+             * @param array $incommingValues Valores a ingresar.
+             * @param string $table Nombre de la tabla en la base de datos.
+             * @return bool Estado de la operación de inserción (true si es exitosa, false si hay error).
+             */
+            $db = new DBConn();
+            $conn = $db->getConn();
+            $query = "INSERT INTO $table VALUES ";
+            $values = [];
+        
+            foreach($incommingValues as $record){
+                $values[] = '(' . $record . ')';
+            }
+        
+            $query .= implode(',', $values);
+        
+            $result = $conn->query($query);
+            
+            error_log("Inserción de  nueva categoria, result=>".$result);
+            return $result;
+        }
+        
     }
 
 ?>

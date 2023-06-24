@@ -7,8 +7,7 @@
                             <span class="input-group-text">Categorías</span>
                             <button class="btn btn-sm btn-outline-secondary input-group-button" 
                                     type="button" 
-                                    id="btnEdit" 
-                                    onclick="popModal()"  
+                                    id="btnEdit"  
                                     title="Editar Categorías"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editModal"
@@ -21,7 +20,7 @@
                 <div class="card-body">
                     <form id="categoryForm" action="" method="post">
                         <?php
-                            echo LandingController::loadCategories();
+                            echo LandingController::loadCategories("radios");
                         ?>
                     </form>
                 </div>
@@ -77,8 +76,9 @@
             document.getElementById("categoryForm").submit();
         });
     });
+    
     catForm.addEventListener('submit', function(event) {
-        event.preventDefault(); //calcelar comportamiento default
+        event.preventDefault(); //cancelar comportamiento default
 
         const formData = new FormData(form); // Obtener los datos del formulario
         // Realizar una solicitud AJAX para cargar el contenido del include
@@ -89,10 +89,12 @@
                 videoListContainer.innerHTML = xhr.responseText;
             }
         };
+        
         xhr.open('POST', '', true); // Especificar la URL de la misma página
         xhr.send(formData);
+        
     });
-
+    /*
     const popModal=()=>{
         const editFormData = new FormData();
 
@@ -110,8 +112,9 @@
             }
         };
         // Enviar la solicitud con el objeto FormData
-        xhr.send(editDormData);
+        xhr.send(editFormData);
     }
+    */
 </script>
 
 

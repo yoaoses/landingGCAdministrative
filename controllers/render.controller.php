@@ -25,6 +25,7 @@
                 $cat=$_POST['cat'];
                 LandingController::loadCatVideos($cat);
             }else{
+
                 LandingController::landing();
             }
         }

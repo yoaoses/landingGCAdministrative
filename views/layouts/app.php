@@ -15,6 +15,7 @@
 <body>
     <header>
         <?php
+            session_start();
             include '../views/partials/nav.php';
         ?>
     </header>
