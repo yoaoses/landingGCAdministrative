@@ -16,7 +16,7 @@
         <a href="?pag=contacts"class="nav-link <?php if(isset($_GET['pag']) && $_GET['pag'] == 'nav-link') echo 'currentPage'; ?>">Contactos</a>    
     </div>
     <div class="container3 ">
-        <a href="?pag=closeSession" class="btn btn-sm btn-outline-light disabled" aria-disabled="true">   
+        <a href="?pag=closeSession" class="btn btn-sm btn-outline-light" aria-disabled="true">   
                 <i class="bi bi-box-arrow-right pr-2"></i> Cerrar sesión
         </a>
         <a href="?pag=admin"class="btn btn-sm btn-outline-light">

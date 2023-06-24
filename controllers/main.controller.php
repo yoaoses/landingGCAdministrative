@@ -23,13 +23,17 @@
             include '../views/pages/contacts.php';
         }
         public static function admin() {
-           // $adminLogged = $_SESSION['admin_logged'] ?? false;
-           // echo($adminLogged);
-           // if ($adminLogged) {
+            $adminLogged = $_SESSION['admin_logged'] ?? false;
+            //echo($adminLogged);
+            if ($adminLogged) {
                 include '../views/pages/admin.php';
-           // } else {
-           //     include '../views/pages/login.html';
-           // }
+            } else {
+                include '../views/pages/login.html';
+            }
+        }
+        public static function closeSession(){
+            session_destroy();
+            include '../views/pages/home.php';
         }
         public static function loadCategories(){
             require_once '../models/DBQ.php';
@@ -41,18 +45,19 @@
                 $htmlString = '';
                 $isChecked = ''; // Variable para controlar el elemento marcado
                 foreach ($data as $index => $item) {
-                    if ($_POST['cat'] == $item["id"]) {
+                    if (isset($_POST['cat']) && $_POST['cat'] == $item["id"]) {
                         $isChecked = ' checked';
-                    } elseif ($_POST['cat'] == '' && $index === 0) {
+                    } elseif (empty($_POST['cat']) && $index === 0) {
                         $isChecked = ' checked';
                     } else {
                         $isChecked = '';
                     }
+                    $radioButtonName = 'cat'; // Nombre común para todos los radio buttons
                     $htmlString .= '<div class="form-check p-0">
-                                        <input type="radio" class="btn-check" name="cat" id="radio-' . $item["id"] . '" value="' . $item["id"] . '"' . $isChecked . '>
-                                        <label class="btn btn-sm btn-outline-primary w-100 ' . ((isset($_GET["cat"]) && $_GET["cat"] == $item["id"]) ? "checked" : "") . '" for="radio-' . $item["id"] . '">' . $item["modulo"] . '</label>
+                                        <input type="radio" class="btn-check catRadio" name="' . $radioButtonName . '" id="radio_' . $item["id"] . '" value="' . $item["id"] . '"' . $isChecked . '>
+                                        <label class="btn btn-sm btn-outline-primary w-100 ' . ((isset($_GET["cat"]) && $_GET["cat"] == $item["id"]) ? "checked" : "") . '" for="radio_' . $item["id"] . '">' . $item["modulo"] . '</label>
                                     </div>';
-                }
+                }                
                 return $htmlString;
             }
         }

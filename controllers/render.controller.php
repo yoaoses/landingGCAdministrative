@@ -20,6 +20,13 @@
                     case 'admin':
                         LandingController::admin();
                         break;
+                    case 'closeSession':
+                        LandingController::closeSession();
+                        break;
+                    case 'addNewCategory':
+                        $value=isset($_POST['catNameInput'])?$_POST['catNameInput']:'';
+                        ModalController::addNewCat('['.$Value.']','video_categories');
+                        break;
                 }
             }else if(isset ($_POST['cat'])){
                 $cat=$_POST['cat'];
