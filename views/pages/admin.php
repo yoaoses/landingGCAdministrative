@@ -75,6 +75,7 @@
                                 <label for="catNameInput">Nombre Categoría</label>
                             </div>
                     </div>
+                    <!-- validaciones -->
                     <div class="text-center">
                         <div class="input-group" id="lenghtGroup">
                             <label class="input-group-text" id="inputLenghtSpan">
@@ -94,6 +95,7 @@
                             </label>
                         </div>
                     </div>
+                    <!------------------>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -159,6 +161,7 @@
                 const label = document.querySelector('label[for="' + selectedRadioButton.id + '"]');
                 document.getElementById("catNameInput").value = label.innerHTML;
                 document.getElementById("catIdInput").value = selectedRadioButton.value
+                checkInput(document.getElementById("catNameInput"));
                 break;
             case "":
                 break;
