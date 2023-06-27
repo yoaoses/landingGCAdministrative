@@ -11,39 +11,35 @@
     const forbithenCharIcon=document.getElementById("forbithenCharIcon");
     const chars=document.getElementById("chars");
     const btnCatSave=document.getElementById("btnCatSave");
-
+    document.getElementById("formNameInput").value="";
+    //---eventlisteners de pagina
+    
     window.addEventListener('DOMContentLoaded', function() {
         const submittedFlag = sessionStorage.getItem('formSubmitted');
         if (!submittedFlag) {
-            catForm.submit();
-            sessionStorage.setItem('formSubmitted', 'true');
+          catForm.submit();
+          sessionStorage.setItem('formSubmitted', 'true');
         }
-        var videoRadioButtons = document.getElementsByClassName('videoRadio');
-    
-        // Convertir la colección en un array
-        var videoRadioArray = Array.from(videoRadioButtons);
-    
-        // Adjuntar el evento click a cada elemento radio
-        videoRadioArray.forEach(function(radioButton) {
-            radioButton.addEventListener('click', function() {
-                radioClicked(this);
-            });
-        });
-    
-        // Hacer clic en el primer radio button
-        if (videoRadioArray.length > 0) {
-        videoRadioArray[0].click();
-        }
-    });
+      });
+      
+      window.addEventListener('hashchange', function() {
+        sessionStorage.removeItem('formSubmitted');
+      });
+      
+      window.addEventListener('popstate', function() {
+        // Se ha producido un cambio en la URL (navegación hacia atrás o adelante)
+        sessionStorage.removeItem('formSubmitted');
+      });
+      
+    //----------------------------
+
     // Obtener todos los elementos radio por su clase
+    var videoRadioButtons = document.getElementsByClassName('videoRadio');
+    
+    // Convertir la colección en un array
+    var videoRadioArray = Array.from(videoRadioButtons);
 
-
-    // Agregar eventos de clic a cada elemento de radio
-    radioButtons.forEach(function(radioButton) {
-        radioButton.addEventListener("click", function() {
-            document.getElementById("categoryForm").submit();
-        });
-    });
+    //-------------------------------------------------------
     catForm.addEventListener('submit', function(event) {
         event.preventDefault(); //calcelar comportamiento default
 
@@ -59,21 +55,25 @@
         xhr.open('POST', '', true); // Especificar la URL de la misma página
         xhr.send(formData);
     });
+
     // Obtener todos los elementos y agregarles evento click->seleccionar todo<input>
     var inputs = document.getElementsByTagName("input");
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].addEventListener("click", function() {
             this.select();
         });
+        
     }
 
     const popModal = (selectedOption) => {
     let checkedRadioButton = document.querySelectorAll('.catRadio:checked');
     const selectedRadioButton=document.getElementById(checkedRadioButton[0].id);
-    //console.log(selectedRadioButton);
+    //console.log(selectedOption);
         switch (selectedOption) {
             case "add":
+                resetFields();
                 document.getElementById("formNameInput").value="addCat";
+                console.log(document.getElementById("formNameInput").value);
                 document.getElementById("catSecction").classList.remove("d-none");
                 document.getElementById("videoSection").classList.add("d-none");
                 document.getElementById("videoDisplay").classList.add("d-none");
@@ -81,6 +81,7 @@
                 break;
             case "update":
                 document.getElementById("formNameInput").value="updateCat";
+                console.log(document.getElementById("formNameInput").value);
                 document.getElementById("catSecction").classList.remove("d-none");
                 document.getElementById("videoSection").classList.add("d-none");
                 document.getElementById("videoDisplay").classList.add("d-none");
@@ -106,8 +107,11 @@
                         break;
                     }
                 }
+                setVideo(document.getElementById("videoDir").value);
+                
                 break;
             case "addVideo":
+                resetFields();
                 document.getElementById("formNameInput").value="addVideo";
                 console.log(document.getElementById("formNameInput").value);
                 document.getElementById("catSecction").classList.add("d-none");
@@ -116,7 +120,6 @@
                 var selectElement=document.getElementById("modalCatSelect");
                 var selectElement = document.getElementById("modalCatSelect");
                 var selectedValue = selectedRadioButton.value;
-                resetFields();
                 // Iterar sobre las opciones del select y establecer la opción seleccionada
                 for (var i = 0; i < selectElement.options.length; i++) {
                     if (selectElement.options[i].value === selectedValue) {
@@ -129,7 +132,7 @@
     }
     const checkInput = (inputElement) => {
         //valida input del nombre, si es valido se habilita el boton guardar
-        console.log(inputElement.id)
+        //console.log(inputElement.id)
         var inputValue;
         if(inputElement.id!="checkButton"){
             inputValue = inputElement.value;
@@ -203,19 +206,18 @@
       
         if (match && match[1]) {
             var videoId = match[1];
-            document.getElementById("videoDir").value = videoId;
+            var videoCode = videoId.split("/").pop();
+            document.getElementById("videoDir").value = videoCode;
+            setVideo(videoCode);
             document.getElementById("videoAlert").classList.add("d-none");
             btnCatSave.removeAttribute("disabled");
-            var url = 'https://www.youtube.com/embed/' + videoId;
-            var iframe = '<iframe width="100%" height="100%" src="' + url + '" frameborder="0" allowfullscreen></iframe>';
-            document.getElementById('insertIframeHere').innerHTML = iframe;
-        
         } else {
           // El enlace no coincide con el formato de un enlace de YouTube válido
           document.getElementById("videoAlert").innerHTML = "Enlace No valido";
           document.getElementById("videoAlert").classList.remove("d-none");
           btnCatSave.setAttribute("disabled", "");
         }
+        
     };
     const resetFields=()=>{
         // Obtener todos los inputs dentro del modal
@@ -237,6 +239,47 @@
         document.getElementById("videoDir").value = clickedRadio.value;
         document.getElementById("checkButton").click();
     }
+    const setVideo = (code) => {
+        var url = 'https://www.youtube.com/embed/' + code;
+        var iframe = '<iframe width="100%" height="100%" src="' + url + '" frameborder="0" allowfullscreen></iframe>';
+        var insertIframeHere = document.getElementById('insertIframeHere');
+    
+        insertIframeHere.innerHTML = iframe;
+    
+        // Adjuntar el controlador de eventos al evento 'load' del iframe
+        insertIframeHere.querySelector('iframe').addEventListener('load', function() {
+            // Habilitar el botón después de que el contenido se haya cargado
+            document.getElementById('btnCatSave').removeAttribute('disabled');
+        });
+    };
+    
+
+
+
+    //al final de todo los listeners
+    // Adjuntar el evento click a cada elemento VideoRadio
+    videoRadioArray.forEach(function(radioButton) {
+        radioButton.addEventListener('click', function() {
+            radioClicked(this);
+        });
+    });
+    // Hacer clic en el primer radio button
+    if (videoRadioArray.length > 0) {
+    videoRadioArray[0].click();
+    }
+    // Agregar eventos de clic a cada elemento de radio
+    radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener("click", function() {
+            document.getElementById("categoryForm").submit();
+        });
+    });
+    /*
+    if(document.getElementById("videoList").innerHTML=""){
+        if (radioButtons.length > 0) {
+            radioButtons[0].click();
+        }
+    }
+    */
       
 
     

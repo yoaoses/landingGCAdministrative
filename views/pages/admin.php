@@ -47,7 +47,7 @@
         </div>
         <div class="card-body" id="videoList">
             <?php
-            echo LandingController::loadCatVideos($_POST['cat'] ?? '');
+            echo LandingController::loadCatVideos($_POST['cat'] ?? '1');
             ?>
         </div>
         </div>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="input-group mb-3 input-group-sm">
                             <span class="input-group-text">url</span>
-                            <input type="text" class="form-control" id="videoDir" placeholder="Dirección web">
+                            <input type="text" class="form-control" id="videoDir" name="videoDir" placeholder="Dirección web">
                             <button class="btn btn-outline-primary" id="checkButton" type="button" onclick="checkUrl()">
                                 Check
                             </button>

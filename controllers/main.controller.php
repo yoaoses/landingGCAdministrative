@@ -4,12 +4,10 @@
         public static function index(){
             include '../views/layouts/app.php';
         }
-
         public static function landing(/*userId */ ){
             //cargarmodulos asignados al usuario
             include '../views/pages/home.php';
         }
-
         public static function tutorials(/*userId */ ){
             //cargartutoriales de modulos asignados al usuario
             include '../views/pages/tutorials.php';
@@ -127,6 +125,19 @@
             error_log("addNewCat=>".$status);
             return $status;
         }
-              
+        public static function newVideo($category,$code,$title){
+            error_log("newVideoFunction recieves=>".$category.",".$code.",".$title);
+            require_once '../models/DBQ.php';
+            $dbq = new DBQ();
+            $status = $dbq->addVideo($category,$code,$title);
+            return $status;
+        }  
+        public static function updateVideo($recordId,$catId,$videoDir,$videoName){
+            error_log("updateVideoFunction(LandingController) recieves=>".$recordId.",".$catId.",".$videoDir.",".$videoName);
+            require_once '../models/DBQ.php';
+            $dbq = new DBQ();
+            $status = $dbq->updateVideo($recordId,$catId,$videoDir,$videoName);
+            return $status;
+        }    
     }
 ?>
