@@ -103,4 +103,12 @@
     color:#fff;
   }
 
+  /*others*/
+
+  .modal-custom-height .modal-dialog {
+    height: 80vh;  /* 70% de la altura de la ventana */
+    margin-top: calc(15vh); /* margen superior para centrar el modal verticalmente */
+  }
+  
+
   
