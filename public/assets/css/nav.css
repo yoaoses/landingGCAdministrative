@@ -109,6 +109,13 @@
     height: 80vh;  /* 70% de la altura de la ventana */
     margin-top: calc(15vh); /* margen superior para centrar el modal verticalmente */
   }
-  
+  .mainconteinerH{
+    height: 85vh;
+    
+  }
+  .cardsH{
+    height:75vh;
+    overflow-y: auto;
+  }
 
   

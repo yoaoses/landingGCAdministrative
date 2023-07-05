@@ -1,5 +1,8 @@
-const navLinks = document.querySelectorAll('nav-link');
 
+
+
+/*
+const navLinks = document.querySelectorAll('nav-link');
 // Agregar evento de clic a cada enlace
 navLinks.forEach(link => {
   link.addEventListener('click', function(event) {
@@ -8,3 +11,4 @@ navLinks.forEach(link => {
     this.classList.add('clicked'); // Agregar la clase 'clicked' al enlace que se ha hecho clic
   });
 });
+*/

@@ -147,8 +147,9 @@
                 return 400; // Código de respuesta de error
             }
         }
+
         function updateVideo($recordId, $seccionId, $videoCode, $videoTitle) {
-            error_log("updateVideoRecive=>".$recordId.",".$seccionId.",".$videoCode.",".$videoTitle);
+            error_log("updateVideoRecive (BDQ)=>".$recordId.",".$seccionId.",".$videoCode.",".$videoTitle);
             $db = new DBConn(); // Instancia de la conexión a la base de datos
         
             // Obtener la conexión a la base de datos
@@ -174,8 +175,48 @@
                 echo '<script>alert("Error en BBDD ");</script>';
             }
         }
+        function obtenerDatosVideos() {
+            // Obtener la conexión desde la clase DBConn
+            $db = new DBConn();
+            $conn = $db->getConn();
         
+            // Consulta SQL con JOIN y condición
+            $consulta = "SELECT videos.*, video_categories.modulo 
+                        FROM videos 
+                        JOIN video_categories ON videos.seccionId = video_categories.id 
+                        WHERE EXISTS (SELECT 1 FROM videos WHERE videos.seccionId = video_categories.id)
+                        ORDER BY video_categories.id";
+            // Ejecutar la consulta
+            $resultado = $conn->query($consulta);
         
+            // Verificar si se obtuvieron resultados
+            if ($resultado->num_rows > 0) {
+                // Array para almacenar los datos
+                $datos = array();
+        
+                // Procesar los datos obtenidos
+                while ($fila = $resultado->fetch_assoc()) {
+                    // Acceder a los campos de la tabla videos
+                    $videoId = $fila["recordId"];
+                    $videoCode = $fila["videoCode"];
+                    $videoTitle = $fila["videoTitle"];
+        
+                    // Acceder al campo de la tabla video_categories
+                    $modulo = $fila["modulo"];
+        
+                    // Almacenar los datos en el array
+                    $datos[$modulo][] = array(
+                        'videoId' => $videoId,
+                        'videoCode' => $videoCode,
+                        'videoTitle' => $videoTitle
+                    );
+                }
+                return $datos;
+            } else {
+                echo "No se encontraron resultados.";
+                return array(); // Devolver un array vacío en caso de no encontrar resultados
+            }
+        }         
     }
 
 ?>

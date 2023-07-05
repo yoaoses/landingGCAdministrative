@@ -29,9 +29,17 @@
                 include '../views/pages/login.html';
             }
         }
+        /*
         public static function closeSession(){
             session_destroy();
             include '../views/pages/home.php';
+        }
+        */
+        public static function closeSession(){
+            session_destroy();
+            header("Location: {$_SERVER['PHP_SELF']}?pag=landing");
+            exit();
+            
         }
         public static function loadCategories($output){
             require_once '../models/DBQ.php';
@@ -87,7 +95,7 @@
                     foreach ($data as $index => $item) {
                         $isChecked = ($index === 0) ? ' checked' : '';
                         $htmlString .= '<div class="form-check p-0">
-                                            <input type="radio" class="videoRadio btn-check" name="video" id="videoRadio_' . $item["recordId"] . '" value="' . $item["videoCode"] . '"' . $isChecked . '>
+                                            <input type="radio" class="videoRadio btn-check" onclick="showVideoOnDysplay(this)" name="video" id="videoRadio_' . $item["recordId"] . '" value="' . $item["videoCode"] . '"' . $isChecked . '>
                                             <label class="btn btn-sm btn-outline-primary w-100" for="videoRadio_' . $item["recordId"] . '">' . $item["videoTitle"] . '</label>
                                         </div>';
                     }
@@ -138,6 +146,52 @@
             $dbq = new DBQ();
             $status = $dbq->updateVideo($recordId,$catId,$videoDir,$videoName);
             return $status;
-        }    
+        }
+        public static function generarAccordion() {
+            // Obtener los datos utilizando la función obtenerDatosConJoin()
+            require_once '../models/DBQ.php';
+            $dbq = new DBQ();
+            $datos = $dbq->obtenerDatosVideos();
+        
+            // Verificar si se obtuvieron resultados
+            if (!empty($datos)) {
+                echo '<div class="accordion accordion-flush" id="accordionFlushExample">';
+        
+                $i = 1; // Variable para llevar el conteo del índice
+        
+                foreach ($datos as $categoria => $videos) {
+                    $collapseId = 'flush-collapse' . $i;
+        
+                    echo '<div class="accordion-item">';
+                    echo '<h2 class="accordion-header">';
+                    echo '<button class="accordion-button collapsed" type="button" onclick="displayCat(this)"data-bs-toggle="collapse" data-bs-target="#' . $collapseId . '" aria-expanded="false" aria-controls="' . $collapseId . '">';
+                    echo $categoria;
+                    echo '</button>';
+                    echo '</h2>';
+                    if($i!=1){
+                        echo '<div id="' . $collapseId . '" class="accordion-collapse collapse " data-bs-parent="#accordionFlushExample">';
+                    }else{
+                        echo '<div id="' . $collapseId . '" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">';
+                    }
+                    echo '<div class="accordion-body">';
+        
+                    foreach ($videos as $video) {
+                        echo '<input type="radio" id="' . $video['videoCode'] . '" name="videoRadio" class="btn-check">';
+                        echo '<label for="' . $video['videoCode'] . '" class="btn btn-sm btn-outline-primary rounded w-100" onclick="showMeTheVideo(\'' . $video['videoCode'] . '\')">' . $video['videoTitle'] . '</label>';
+
+                    }
+        
+                    echo '</div>'; // accordion-body
+                    echo '</div>'; //accordion-collapse
+                    echo '</div>'; //accordion-item
+        
+                    $i++;
+                }
+        
+                echo '</div>'; //accordion
+            } else {
+                echo "No se encontraron resultados.";
+            }
+        }          
     }
 ?>

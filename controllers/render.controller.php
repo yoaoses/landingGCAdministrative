@@ -27,14 +27,12 @@
                             break;
                     }
                 }
-            }else{
-                if(isset ($_POST['cat'])){
+            }else if(isset ($_POST['cat'])){
                     $cat=$_POST['cat'];
                     LandingController::admin();
                     LandingController::loadCatVideos($cat);
-                    
 
-                }else if(isset($_POST['formName'])){
+            }else if(isset($_POST['formName'])){
                     error_log("se ha ingresado a post de formualrio modo categoria=>".$_POST['formName']);
                     switch($_POST['formName']){
                         case "addCat":
@@ -94,12 +92,12 @@
 
                             break;
                     }
-                }else{
+            }else{
                     error_log("no se ha podido obtener la vista");
                     LandingController::landing();
-                }
             }
         }
-        
     }
+        
+    
 ?>

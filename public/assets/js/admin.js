@@ -178,9 +178,11 @@
                 forbithenCharIcon.classList.remove("text-danger");
                 forbithenCharIcon.innerHTML='<i class="bi bi-check-lg"></i>';
             }
+            /*
             if(inputElement.id=="videoName"){
                 document.getElementById("showTitle").innerHTML=inputValue;
             }
+            */
         }else{
             err++;
             chars.classList.add("text-muted");
@@ -228,7 +230,7 @@
         input.value = "";
         });
         document.getElementById('insertIframeHere').innerHTML="";
-        document.getElementById("showTitle").innerHTML="";
+        //document.getElementById("showTitle").innerHTML="";
     }
     const radioClicked = (clickedRadio) => {
         console.log(clickedRadio);
@@ -252,10 +254,12 @@
             document.getElementById('btnCatSave').removeAttribute('disabled');
         });
     };
-    
-
-
-
+    const showVideoOnDysplay=(videoRadio)=>{
+        var url = 'https://www.youtube.com/embed/' + videoRadio.value;
+        var iframe = '<iframe width="100%" height="100%" src="' + url + '" frameborder="0" allowfullscreen></iframe>';
+        document.getElementById('displayFrame').innerHTML = iframe;
+        document.getElementById('inserturl').innerHTML = url;
+    }
     //al final de todo los listeners
     // Adjuntar el evento click a cada elemento VideoRadio
     videoRadioArray.forEach(function(radioButton) {

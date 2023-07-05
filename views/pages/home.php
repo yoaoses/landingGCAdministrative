@@ -2,3 +2,7 @@
 <?php
     //echo LandingController::welcome();
 ?>
+
+<script src="assets/js/home"></script>
+
+
